@@ -7,6 +7,11 @@ public class Main {
         System.out.println("Выполните ввод выражения.");
         Scanner sc = new Scanner(System.in); //ввод выражения
         String expression = sc.nextLine();  //сохраняем строку с выражением в переменную
+        String res = calc(expression);  //применяем к строке метод и сохраняем в переменной
+        System.out.println("Возвращаемое значение: " + res);  //выводим результат
+
+    }
+    public static String calc(String expression){
         String[] signs = {"*", "/", "+", "-"}; //массив с переменными для мат. оператора
         String[] romanNumbers = {"", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "XI"}; //массив с римскими цифрами
         String[] romanNumbersC10 = {"", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "CX", "C"}; //массив с римскими цифрами
@@ -17,7 +22,7 @@ public class Main {
                     !(expression.contains("M"))) { //проверяем строку на не содержание римской цифры
                 for (int i = 0; i < 4; i++) {
                     if (expression.contains(signs[i])) {                              //проверяем строку на содержание знака
-                        expression = expression.replaceAll("\\s+",""); //удаляем пробелы, которые вставил в строку коварный тестировщик
+                        expression = expression.replaceAll("\\s+", ""); //удаляем пробелы, которые вставил в строку коварный тестировщик
                         String[] splitExpression = expression.split("[*/+-]");  //если он есть, делим по нему на массив строк
                         String romanNumbersStr = Arrays.toString(romanNumbers);             //создаем строку из массива с римскими цифрами
                         if (romanNumbersStr.contains(splitExpression[0]) && romanNumbersStr.contains(splitExpression[1])) {  //проверяем оба операнда на принадлежность к римским цифрам
@@ -31,9 +36,8 @@ public class Main {
                                     try {
                                         throw new IOException();
                                     } catch (IOException e) {
-                                        System.out.println("throws Exception: Формат математической операции не удовлетворяет заданию - " +
-                                                "два операнда от 1 до 10 и один оператор (+, -, /, *) !");
-                                        break;
+                                        return "throws Exception: Формат математической операции не удовлетворяет заданию - " +
+                                                "два операнда от 1 до 10 и один оператор (+, -, /, *) !";
                                     }
                                 }
                                 if (signs[i].contains("*")) {
@@ -48,30 +52,26 @@ public class Main {
                                 if (res > 0) {
                                     int c = res / 10;
                                     int n = res % 10;
-                                    System.out.println("Возвращаемое значение: " + romanNumbersC10[c] + romanNumbers[n]);  // ну и выводим
-                                    break;
+                                    return romanNumbersC10[c] + romanNumbers[n];
                                 } else {
                                     try {
                                         throw new IOException();
                                     } catch (IOException e) {
-                                        System.out.println("throws Exception: Т.к. в римской системе нет отрицательных чисел!");
-                                        break;
+                                        return "throws Exception: Т.к. в римской системе нет отрицательных чисел и ноля!";
                                     }
                                 }
                             } else {
                                 try {
                                     throw new IOException();
                                 } catch (IOException e) {
-                                    System.out.println("throws Exception: Вводимые числа не должны быть меньше 1 или больше 10!");
-                                    break;
+                                    return "throws Exception: Вводимые числа не должны быть меньше 1 или больше 10!";
                                 }
                             }
                         } else {
                             try {
                                 throw new IOException();
                             } catch (IOException e) {
-                                System.out.println("throws Exception: Т.к. используются одновременно разные системы счисления!");
-                                break;
+                                return "throws Exception: Т.к. используются одновременно разные системы счисления!";
                             }
                         }
 
@@ -81,8 +81,8 @@ public class Main {
                 try {
                     throw new IOException();
                 } catch (IOException e) {
-                    System.out.println("throws Exception: Вводимые числа не должны быть меньше 1 или больше 10!");
-                                    }
+                    return "throws Exception: Вводимые числа не должны быть меньше 1 или больше 10!";
+                }
             }
         } else if (expression.matches(".*\\d.*")) {
             for (int i = 0; i < 4; i++) {
@@ -96,9 +96,8 @@ public class Main {
                             try {
                                 throw new IOException();
                             } catch (IOException e) {
-                                System.out.println("throws Exception: Формат математической операции не удовлетворяет заданию - " +
-                                        "два операнда и один оператор (+, -, /, *) !");
-                                break;
+                                return  "throws Exception: Формат математической операции не удовлетворяет заданию - " +
+                                        "два операнда и один оператор (+, -, /, *) !";
                             }
                         }
                         if (signs[i].contains("*")) {
@@ -110,14 +109,12 @@ public class Main {
                         } else {
                             res = x - y;
                         }
-                        System.out.println("Возвращаемое значение: " + res);  // ну и выводим
-                        break;
+                        return "" + res;
                     } else {
                         try {
                             throw new IOException();
                         } catch (IOException e) {
-                            System.out.println("throws Exception: Вводимые числа не должны быть меньше 1 или больше 10!");
-                            break;
+                            return "throws Exception: Вводимые числа не должны быть меньше 1 или больше 10!";
                         }
                     }
                 }
@@ -126,8 +123,9 @@ public class Main {
             try {
                 throw new IOException();
             } catch (IOException e) {
-                System.out.println("throws Exception: Строка не является математической операцией!");
+                return "throws Exception: Строка не является математической операцией!";
             }
         }
+        return "result"; //а это костыль
     }
 }
